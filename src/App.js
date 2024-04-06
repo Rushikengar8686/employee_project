@@ -1,10 +1,31 @@
 import logo from './logo.svg';
 import './App.css';
+import{BrowserRouter, Link, Route, Routes} from 'react-router-dom';
+import CreateEmp from './Emp_Pages/CreateEmp';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
+    <div>
+       <BrowserRouter>
+        <nav className="navbar navbar-expand-sm bg-primary navbar-light">
+          <div className="container">
+            <ul className="navbar-nav">
+              <li className="nav-item">
+               <Link className="nav-link Active" to="Create_Emp">Create Employee</Link>
+              </li>
+              
+            </ul>
+          </div>
+        </nav>
+        <Routes>
+          <Route path='Create_Emp' element={<CreateEmp></CreateEmp>}></Route>
+        
+          
+         </Routes>
+
+     </BrowserRouter>
+    
+      {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
@@ -17,7 +38,7 @@ function App() {
         >
           Learn React
         </a>
-      </header>
+      </header> */}
     </div>
   );
 }
