@@ -50,6 +50,15 @@ const CreateEmp = () => {
             alert(result.data.message);
         }
     }
+    const onDelete =  async (empId) =>{
+        const result = await axios.get(`${getUrl}DeleteEmployeeByEmpId?empid=`+empId);
+        if(result.data.data){
+            alert("Employee Delete Success...");
+            getAllEmp();
+        }else{
+            alert(result.data.message);
+        }
+    }
 
     useEffect (()=>{
         getAllEmp();
@@ -68,7 +77,7 @@ const CreateEmp = () => {
                                     {
                                         getAllEmpList.map((employee) => {
                                             return (
-                                                <div className="col-3">
+                                                <div className="col-4">
                                                     <div className="card m-1">
                                                         <div className="card-body">
                                                             <h6 className="card-title">{employee.empName}</h6>
@@ -82,9 +91,10 @@ const CreateEmp = () => {
                                                                 <strong>{employee.bankBranch}</strong><br />
                                                                 <strong>{employee.salary}</strong>
                                                             </p>
-                                                            <span className='m-1'>
-                                                            <button className='btn btn-secondary' onClick={()=>{onEdit(employee)}}>Edit</button>
-                                                            <button className='btn btn-primary' onClick={()=>{onEdit(employee)}}>Delete</button>
+                                                            
+                                                            <span>
+                                                            <button className='btn btn-secondary m-1' onClick={()=>{onEdit(employee)}}>Edit</button>
+                                                            <button className='btn btn-primary' onClick={()=>{onDelete(employee.empId)}}>Delete</button>
                                                       
                                                             </span>
                                                           </div>
