@@ -3,6 +3,7 @@ import './App.css';
 import{BrowserRouter, Link, Route, Routes} from 'react-router-dom';
 import CreateEmp from './Emp_Pages/CreateEmp';
 import EmpAddAttendance from './Emp_Pages/EmpAddAttendance';
+import AddAdvance from './Emp_Pages/AddAdvance';
 
 function App() {
   return (
@@ -17,6 +18,9 @@ function App() {
               <li className="nav-item">
                <Link className="nav-link Active" to="AddAttendance">Add Attendance</Link>
               </li>
+              <li className="nav-item">
+               <Link className="nav-link Active" to="Add-Advance">Add-Advance</Link>
+              </li>
               
             </ul>
           </div>
@@ -24,6 +28,7 @@ function App() {
         <Routes>
           <Route path='Create_Emp' element={<CreateEmp></CreateEmp>}></Route>
           <Route path='AddAttendance' element={<EmpAddAttendance></EmpAddAttendance>}></Route>
+          <Route path='Add-Advance' element={<AddAdvance></AddAdvance>}></Route>
         
           
          </Routes>

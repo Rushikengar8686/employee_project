@@ -65,7 +65,6 @@ const EmpAddAttendance = () => {
     //*************************** DELETE ATTENDANCE ************************************** */
 
     const onDelete = async (attendanceId) => {
-        debugger
         const result = await axios.get(`${ getUrl }DeleteAttendanceById?attendanceid=` + attendanceId);
         if (result.data.data) {
             alert("Attendance delete success...");
