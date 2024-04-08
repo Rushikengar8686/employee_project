@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import{BrowserRouter, Link, Route, Routes} from 'react-router-dom';
 import CreateEmp from './Emp_Pages/CreateEmp';
+import EmpAddAttendance from './Emp_Pages/EmpAddAttendance';
 
 function App() {
   return (
@@ -13,12 +14,16 @@ function App() {
               <li className="nav-item">
                <Link className="nav-link Active" to="Create_Emp">Create Employee</Link>
               </li>
+              <li className="nav-item">
+               <Link className="nav-link Active" to="AddAttendance">Add Attendance</Link>
+              </li>
               
             </ul>
           </div>
         </nav>
         <Routes>
           <Route path='Create_Emp' element={<CreateEmp></CreateEmp>}></Route>
+          <Route path='AddAttendance' element={<EmpAddAttendance></EmpAddAttendance>}></Route>
         
           
          </Routes>

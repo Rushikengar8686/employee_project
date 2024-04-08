@@ -21,14 +21,16 @@ const CreateEmp = () => {
       })
       
     const getUrl = "https://onlinetestapi.gerasim.in/api/TeamSync/";
-
+  //*************************** Get All Employee List ************************************** */
     const getAllEmp = async () =>{
         const result = await axios.get(`${getUrl}GetAllEmployee`);
         setGetAllEmpList(result.data.data);
     }
+      //*************************** Fill Employee Information ************************************** */
     const getCreateEmployee = (event,key) =>{   
         setCreateEmployee(preObj =>({...preObj,[key]:event.target.value}));
     }
+      //*************************** Save Employee ************************************** */
     const SaveEmp = async () =>{
         const result = await axios.post(`${getUrl}CreateEmployee`,createEmployee);
         if(result.data.data){
@@ -41,6 +43,7 @@ const CreateEmp = () => {
     const onEdit = (editinfo)=>{
         setCreateEmployee(editinfo);
     } 
+      //***************************Update Employee ************************************** */
     const updateEmpInfo = async() =>{
         const result = await axios.post(`${getUrl}UpdateEmployee`,createEmployee);
         if(result.data.data){
@@ -50,6 +53,7 @@ const CreateEmp = () => {
             alert(result.data.message);
         }
     }
+      //*************************** DELETE Employee ************************************** */
     const onDelete =  async (empId) =>{
         const result = await axios.get(`${getUrl}DeleteEmployeeByEmpId?empid=`+empId);
         if(result.data.data){
@@ -65,6 +69,7 @@ const CreateEmp = () => {
     },[])
     return (
         <div>
+            {JSON.stringify(createEmployee)}
            <div className="container-fluid">
            <div className="row">
                     <div className="col-8">
@@ -132,21 +137,21 @@ const CreateEmp = () => {
                                 </div>
                                 <div className="col-6">
                                     <label htmlFor="">Address Line1</label>
-                                    <input type="text" value={createEmployee.addressLine1} className='form-control' onChange={(event)=>{getCreateEmployee(event,'addressLine1')}}/>
+                                    <textarea type="text" value={createEmployee.addressLine1} className='form-control' onChange={(event)=>{getCreateEmployee(event,'addressLine1')}}/>
                                 </div>
                                 <div className="col-6">
                                     <label htmlFor="">Address Line2</label>
-                                    <input type="text" value={createEmployee.addressLine2} className='form-control' onChange={(event)=>{getCreateEmployee(event,'addressLine2')}}/>
+                                    <textarea type="text" value={createEmployee.addressLine2} className='form-control' onChange={(event)=>{getCreateEmployee(event,'addressLine2')}}/>
                                 </div>
-                                <div className="col-6">
+                                <div className="col-4">
                                     <label htmlFor="">Pincode</label>
                                     <input type="text" value={createEmployee.pincode} className='form-control' onChange={(event)=>{getCreateEmployee(event,'pincode')}}/>
                                 </div>
-                                <div className="col-6">
+                                <div className="col-4">
                                     <label htmlFor="">City</label>
                                     <input type="text" value={createEmployee.city} className='form-control' onChange={(event)=>{getCreateEmployee(event,'city')}}/>
                                 </div>
-                                <div className="col-6">
+                                <div className="col-4">
                                     <label htmlFor="">State</label>
                                     <input type="text" value={createEmployee.state} className='form-control' onChange={(event)=>{getCreateEmployee(event,'state')}}/>
                                 </div>
@@ -158,7 +163,7 @@ const CreateEmp = () => {
                                     <label htmlFor="">IFSC</label>
                                     <input type="text" value={createEmployee.ifsc} className='form-control' onChange={(event)=>{getCreateEmployee(event,'ifsc')}}/>
                                 </div>
-                                <div className="col-6">
+                                <div className="col-12">
                                     <label htmlFor="">Account No</label>
                                     <input type="text" value={createEmployee.accountNo} className='form-control' onChange={(event)=>{getCreateEmployee(event,'accountNo')}}/>
                                 </div>
