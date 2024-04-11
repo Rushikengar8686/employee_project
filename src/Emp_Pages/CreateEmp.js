@@ -40,6 +40,8 @@ const CreateEmp = () => {
             alert(result.data.message);
         }
     }
+     //*************************** Edit Employee ************************************** */
+
     const onEdit = (editinfo)=>{
         setCreateEmployee(editinfo);
     } 
