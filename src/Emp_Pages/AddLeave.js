@@ -13,6 +13,10 @@ const AddLeave = () => {
         "noOfFullDayLeaves": 0,
         "noOfHalfDayLeaves": 0
     })
+    useEffect(() => {
+        getAllLeave();
+        getAllEmpId();
+    })
     //****************************** Employee ID Call  *************************************** */
     const getAllEmpId = async () => {
         const result = await axios.get(`${getUrl}GetAllEmployee`);
@@ -51,17 +55,28 @@ const AddLeave = () => {
     }
     //****************************** Delete Leave   *************************************** */
      const onDelete = async (leaveId) =>{
-        const result = await axios.get(`${getUrl}DeleteLeaveById?leaveid=` + leaveId);
+        const isDelete = window.confirm("Are you sure the Delete this record");
+        if(isDelete){
+            const result = await axios.get(`${getUrl}DeleteLeaveById?leaveid=` + leaveId);
         if (result.data.data) {
             alert("Delete Leave Success....");
         } else {
             alert(result.data.message);
         }
      }
-    useEffect(() => {
-        getAllLeave();
-        getAllEmpId();
-    })
+        }
+        
+     const resetData = () =>{
+        setAddLeaveList({
+            "leaveId": 0,
+            "employeeId": 0,
+            "leaveDate": " ",
+            "leaveReason": " ",
+            "noOfFullDayLeaves": 0,
+            "noOfHalfDayLeaves": 0
+        })
+     }
+    
     return (
         <div>
             <div className="container-fluid">
@@ -119,13 +134,13 @@ const AddLeave = () => {
                                 <div className="row">
 
                                     <div className="col-6">
-                                        <label htmlFor="">Employee Id</label>
+                                        <label htmlFor="">Employee</label>
                                         <select name="" id="" value={addleaveList.employeeId} className='form-select' onChange={(event) => { leaveInfo(event, 'employeeId') }} >
-
+                                        <option >Select employee</option>
                                             {
                                                 empId.map((empid) => {
                                                     return (
-                                                        <option>{empid.empId}</option>
+                                                        <option value={empid.empId}>{empid.empName}</option>
                                                     )
                                                 })
                                             }
@@ -148,16 +163,23 @@ const AddLeave = () => {
                                         <label htmlFor="">Leave Date</label>
                                         <input type="datetime-local" value={addleaveList.leaveDate} className='form-control' onChange={(event) => { leaveInfo(event, 'leaveDate') }} />
                                     </div>
-                                    <div className="row">
+                                    <div className="row text-center">
+                                        <div className="col-6">
+                                        <button type="button" className='btn btn-secondary mt-2' onClick={resetData}>Reset</button>
+
+                                        </div>
+                                        <div className="col-6">
                                         {
-                                            addleaveList.leaveId == ' ' && <div className="col-12 text-center mt-2">
+                                            addleaveList.leaveId == ' ' && <div className="col-12  mt-2">
                                                 <button type="button" className='btn btn-secondary' onClick={SaveLeave}>Save Leave</button>
                                             </div>
                                         }{
-                                            addleaveList.leaveId != '' && <div className="col-12 text-center mt-2">
+                                            addleaveList.leaveId != '' && <div className="col-12  mt-2">
                                                 <button type="button" className='btn btn-warning' onClick={UpdateLeave}>Update</button>
                                             </div>
                                         }
+                                        </div>
+                                        
 
 
                                     </div>

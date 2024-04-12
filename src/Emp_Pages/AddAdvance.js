@@ -3,73 +3,76 @@ import axios from 'axios';
 const AddAdvance = () => {
     const getUrl = "https://onlinetestapi.gerasim.in/api/TeamSync/";
     const [empId, setEmpId] = useState([]);
-    const [getAllAddAdvanceList,setGetAllAddAdvanceList] = useState([]);
-    const [addaddvance,setAddAddvance] = useState({
+    const [getAllAddAdvanceList, setGetAllAddAdvanceList] = useState([]);
+    const [addaddvance, setAddAddvance] = useState({
         "advanceId": 0,
         "employeeId": 0,
         "advanceDate": "",
         "advanceAmount": 0,
         "reason": " "
-      })          
+    })
     //****************************** Add Addvance Emp Information  *************************************** */
-    const addAddvanceinfo = (event,key)=>{
-        setAddAddvance(preObj =>({...preObj,[key]:event.target.value}));
+    const addAddvanceinfo = (event, key) => {
+        setAddAddvance(preObj => ({ ...preObj, [key]: event.target.value }));
     }
-      
+
 
     //****************************** Employee ID Call  *************************************** */
     const getAllEmpId = async () => {
-        const result = await axios.get(`${ getUrl }GetAllEmployee`);
+        const result = await axios.get(`${getUrl}GetAllEmployee`);
         setEmpId(result.data.data)
     }
     //****************************** Get all Addvance List  *************************************** */
-    const getAllAddvance = async () =>{
+    const getAllAddvance = async () => {
         const result = await axios.get(`${getUrl}GetAllAdvance`);
         setGetAllAddAdvanceList(result.data.data);
     }
     //****************************** Get Add Addvance  *************************************** */
-    const SaveAddAddvance = async () =>{
-        const result = await axios.post(`${getUrl}AddAdvance`,addaddvance);
-        if(result.data.data){
+    const SaveAddAddvance = async () => {
+        const result = await axios.post(`${getUrl}AddAdvance`, addaddvance);
+        if (result.data.data) {
             alert("Addvance Add Success....!");
             getAllAddvance();
-        }else{
+        } else {
             alert(result.data.message);
         }
     }
     //****************************** Edit Add Addvance  *************************************** */
 
-    const onEdit = (addvance) =>{
+    const onEdit = (addvance) => {
         setAddAddvance(addvance);
     }
     //****************************** Update Add Addvance  *************************************** */
 
-    const updateAddvance = async () =>{
-        const result = await axios.post(`${getUrl}UpdateAdvance`,addaddvance);
-        if(result.data.data){
+    const updateAddvance = async () => {
+        const result = await axios.post(`${getUrl}UpdateAdvance`, addaddvance);
+        if (result.data.data) {
             alert("Addvance Update Success....!");
             getAllAddvance();
-        }else{
+        } else {
             alert(result.data.message);
         }
     }
-     //****************************** Delete Addvance  *************************************** */
+    //****************************** Delete Addvance  *************************************** */
 
-    const onDelete = async (advanceId) =>{
-        debugger
-        const result = await axios.get(`${getUrl}DeleteAdvanceById?advanceid=`+ advanceId);
-        if(result.data.data){
+    const onDelete = async (advanceId) => {
+        const isDelete = window.confirm("Are you sure the Delete this record");
+        if(isDelete){
+            const result = await axios.get(`${getUrl}DeleteAdvanceById?advanceid=` + advanceId);
+        if (result.data.data) {
             alert("Addvance Delete Success....!");
             getAllAddvance();
-        }else{
+        } else {
             alert(result.data.message);
         }
+        }
+        
     }
 
-    useEffect (()=>{
+    useEffect(() => {
         getAllAddvance();
         getAllEmpId();
-    },[])
+    }, [])
 
     return (
         <div>
@@ -94,18 +97,18 @@ const AddAdvance = () => {
                                     </thead>
                                     <tbody>
                                         {
-                                            getAllAddAdvanceList.map((addvance,index)=>{
+                                            getAllAddAdvanceList.map((addvance, index) => {
                                                 return (
                                                     <tr>
-                                                        <td>{index+1}</td>
+                                                        <td>{index + 1}</td>
                                                         <td>{addvance.empName}</td>
                                                         <td>{addvance.employeeId}</td>
                                                         <td>{addvance.advanceDate}</td>
                                                         <td>{addvance.advanceAmount}</td>
                                                         <td>{addvance.reason}</td>
                                                         <td>
-                                                            <button type="button" className='btn btn-primary' onClick={()=>{onEdit(addvance)}}>Edit</button>
-                                                            <button type="button" className='btn btn-danger' onClick={()=>{onDelete(addvance.advanceId)}}>Delete</button>
+                                                            <button type="button" className='btn btn-primary' onClick={() => { onEdit(addvance) }}>Edit</button>
+                                                            <button type="button" className='btn btn-danger' onClick={() => { onDelete(addvance.advanceId) }}>Delete</button>
                                                         </td>
                                                     </tr>
                                                 )
@@ -124,15 +127,15 @@ const AddAdvance = () => {
                             </div>
                             <div className="card-body">
                                 <div className="row">
-                                
+
                                     <div className="col-6">
-                                        <label htmlFor="">Employee Id</label>
-                                        <select name="" id="" value={addaddvance.employeeId} className='form-select' onChange={(event)=>{addAddvanceinfo(event,'employeeId')}}>
-                                       
+                                        <label htmlFor="">Employee </label>
+                                        <select name="" id="" value={addaddvance.employeeId} className='form-select' onChange={(event) => { addAddvanceinfo(event, 'employeeId') }}>
+                                            <option >Select employee</option>
                                             {
                                                 empId.map((empid) => {
                                                     return (
-                                                        <option>{empid.empId}</option>
+                                                        <option value={empid.empId}>{empid.empName}</option>
                                                     )
                                                 })
                                             }
@@ -140,29 +143,37 @@ const AddAdvance = () => {
                                     </div>
                                     <div className="col-6">
                                         <label htmlFor="">Advance Date</label>
-                                        <input type="datetime-local" value={addaddvance.advanceDate} className='form-control'onChange={(event)=>{addAddvanceinfo(event,'advanceDate')}} />
+                                        <input type="datetime-local" value={addaddvance.advanceDate} className='form-control' onChange={(event) => { addAddvanceinfo(event, 'advanceDate') }} />
                                     </div>
                                     <div className="col-6">
                                         <label htmlFor="">Advance Amount</label>
-                                        <input type="text" value={addaddvance.advanceAmount} className='form-control'onChange={(event)=>{addAddvanceinfo(event,'advanceAmount')}} />
+                                        <input type="text" value={addaddvance.advanceAmount} className='form-control' onChange={(event) => { addAddvanceinfo(event, 'advanceAmount') }} />
                                     </div>
                                     <div className="col-6">
                                         <label htmlFor="">Reason</label>
-                                        <input type="text" value={addaddvance.reason}  className='form-control'onChange={(event)=>{addAddvanceinfo(event,'reason')}} />
+                                        <input type="text" value={addaddvance.reason} className='form-control' onChange={(event) => { addAddvanceinfo(event, 'reason') }} />
                                     </div>
-                                    <div className="row">{
-                                        addaddvance.advanceId == '' && <div className="col-12 text-center mt-3">
-                                        <button type="button" className='btn btn-outline-success' onClick={SaveAddAddvance}>Save</button>
+                                    <div className="row text-center">
+                                        <div className="col-6">
+                                            <button type="button" className='btn btn-secondary mt-3'>Reset</button>
+                                            
+                                        </div>
+                                        <div className="col-6">
+                                        {
+                                                addaddvance.advanceId == '' && <div className="col-12  mt-3">
+                                                    <button type="button" className='btn btn-outline-success' onClick={SaveAddAddvance}>Save</button>
+                                                </div>
+                                            }
+                                            {
+                                                addaddvance.advanceId != '' && <div className="col-12  mt-3">
+                                                    <button type="button" className='btn btn-outline-warning' onClick={updateAddvance}>Update</button>
+                                                </div>
+                                            }
+                                        </div>
+
+
                                     </div>
-                                    }
-                                    {
-                                        addaddvance.advanceId != '' && <div className="col-12 text-center mt-3">
-                                        <button type="button" className='btn btn-outline-warning' onClick={updateAddvance}>Update</button>
-                                    </div>
-                                    }
-                                        
-                                    </div>
-                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

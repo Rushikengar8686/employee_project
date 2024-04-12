@@ -65,13 +65,27 @@ const EmpAddAttendance = () => {
     //*************************** DELETE ATTENDANCE ************************************** */
 
     const onDelete = async (attendanceId) => {
-        const result = await axios.get(`${ getUrl }DeleteAttendanceById?attendanceid=` + attendanceId);
-        if (result.data.data) {
-            alert("Attendance delete success...");
-            getAllAttendance();
-        } else {
-            alert(result.data.message);
+        const isDelete = window.confirm("Are you sure the Delete this record");
+        if(isDelete){
+            const result = await axios.get(`${ getUrl }DeleteAttendanceById?attendanceid=` + attendanceId);
+            if (result.data.data) {
+                alert("Attendance delete success...");
+                getAllAttendance();
+            } else {
+                alert(result.data.message);
+            }
         }
+       
+    }
+    const resetData =() =>{
+        setFillAttendance({
+            "attendanceId": 0,
+            "employeeId": 0,
+            "attendanceDate": "",
+            "inTime": "",
+            "outTime": "",
+            "isFullDay": false
+        })
     }
 
     useEffect(() => {
@@ -133,13 +147,13 @@ const EmpAddAttendance = () => {
                             <div className="card-body">
                                 <div className="row">
                                     <div className="col-6">
-                                        <label htmlFor="">Employee Id</label>
+                                        <label htmlFor="">Employee </label>
                                         <select name="" id="" className='form-select' value={fillAttendance.employeeId} onChange={(event) => { attendanceFill(event, 'employeeId') }}>
-                                            <option ></option>
+                                        <option >Select employee</option>
                                             {
                                                 empId.map((empid) => {
                                                     return (
-                                                        <option>{empid.empId}</option>
+                                                        <option value={empid.empId}>{empid.empName}</option>
                                                     )
                                                 })
                                             }
@@ -163,18 +177,24 @@ const EmpAddAttendance = () => {
 
 
                                 </div>
-                                <div className="row">
+                                <div className="row text-center">
+                                    <div className="col-6">
+                                        <button type="button" className='btn btn-secondary mt-2' onClick={resetData}>Reset</button>
+                                    </div>
+                                    <div className="col-6">
                                     {
-                                        fillAttendance.attendanceId == '' && <div className="col-12 mt-2 text-center">
+                                        fillAttendance.attendanceId == '' && <div className="col-12 mt-2 ">
 
                                             <button type="button" className='btn btn-success' onClick={addAttendance}>Save Attendance</button>
                                         </div>
                                     }
                                     {
-                                        fillAttendance.attendanceId != '' && <div className="col-12 mt-2 text-center">
+                                        fillAttendance.attendanceId != '' && <div className="col-12 mt-2 ">
                                             <button type="button" className='btn btn-warning' onClick={updateAttendance}>Update Attendance</button>
                                         </div>
                                     }
+                                    </div>
+                                    
 
 
 

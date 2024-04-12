@@ -19,8 +19,12 @@ const CreateEmp = () => {
         "bankBranch": " ",
         "salary": 0
       })
+
       
     const getUrl = "https://onlinetestapi.gerasim.in/api/TeamSync/";
+    useEffect (()=>{
+        getAllEmp();
+    },[])
   //*************************** Get All Employee List ************************************** */
     const getAllEmp = async () =>{
         const result = await axios.get(`${getUrl}GetAllEmployee`);
@@ -42,8 +46,10 @@ const CreateEmp = () => {
     }
      //*************************** Edit Employee ************************************** */
 
-    const onEdit = (editinfo)=>{
-        setCreateEmployee(editinfo);
+    const onEdit = async (editinfo)=>{
+        debugger
+        const result = await axios.get(`${getUrl}GetEmployeeByEmpId?empid=`+editinfo);
+        setCreateEmployee(result.data.data);
     } 
       //***************************Update Employee ************************************** */
     const updateEmpInfo = async() =>{
@@ -57,18 +63,42 @@ const CreateEmp = () => {
     }
       //*************************** DELETE Employee ************************************** */
     const onDelete =  async (empId) =>{
-        const result = await axios.get(`${getUrl}DeleteEmployeeByEmpId?empid=`+empId);
+        const isDelete = window.confirm("Are you sure the Delete this record");
+        if(isDelete){
+            const result = await axios.get(`${getUrl}DeleteEmployeeByEmpId?empid=`+empId);
         if(result.data.data){
             alert("Employee Delete Success...");
             getAllEmp();
         }else{
             alert(result.data.message);
         }
+
+        }
+        
+    }
+    //*************************** Reset Employee ************************************** */
+
+    const resetData = () =>{
+        setCreateEmployee({
+            "empId": 0,
+            "empName": " ",
+            "empContactNo": " ",
+            "empAltContactNo": "",
+            "empEmail": "",
+            "addressLine1": " ",
+            "addressLine2": " ",
+            "pincode": " ",
+            "city": " ",
+            "state": " ",
+            "bankName": " ",
+            "ifsc": " ",
+            "accountNo": " ",
+            "bankBranch": " ",
+            "salary": 0
+        })
     }
 
-    useEffect (()=>{
-        getAllEmp();
-    },[])
+  
     return (
         <div>
             {JSON.stringify(createEmployee)}
@@ -100,7 +130,7 @@ const CreateEmp = () => {
                                                             </p>
                                                             
                                                             <span>
-                                                            <button className='btn btn-secondary m-1' onClick={()=>{onEdit(employee)}}>Edit</button>
+                                                            <button className='btn btn-secondary m-1' onClick={()=>{onEdit(employee.empId)}}>Edit</button>
                                                             <button className='btn btn-primary' onClick={()=>{onDelete(employee.empId)}}>Delete</button>
                                                       
                                                             </span>
@@ -178,18 +208,25 @@ const CreateEmp = () => {
                                     <input type="text" value={createEmployee.salary} className='form-control' onChange={(event)=>{getCreateEmployee(event,'salary')}}/>
                                 </div>
                             </div>
-                            <div className="row">
+                            <div className="row text-center">
+                                <div className="col-6">
+                                <button type="button" className='btn btn-secondary mt-2' onClick={resetData}>Reset</button>
+
+                                </div>
+                                <div className="col-6">
                                 {
-                                    createEmployee.empId == ' ' &&  <div className="col-12 mt-4 text-center">
+                                    createEmployee.empId == ' ' &&  <div className="col-12 mt-2 ">
                                     <button type="button" className='btn btn-success' onClick={SaveEmp}>Save</button>
                                 </div>
                                 }
                                 {
-                                    createEmployee.empId != '' && <div className="col-12 mt-4 text-center">
+                                    createEmployee.empId != '' && <div className="col-12 mt-2 ">
                                     <button type="button" className='btn btn-warning' onClick={updateEmpInfo}>Update</button>
     
                                     </div>
                                 }
+                                </div>
+                               
                                
                                 
                             </div>

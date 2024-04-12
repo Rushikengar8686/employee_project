@@ -54,12 +54,27 @@ const EmpSalary = () => {
     //****************************** Delete Salary *************************************** */    
 
     const onDelete =  async (salaryId) =>{
-        const result = await axios.get(`${getUrl}DeleteSalaryById?salaryid=`+salaryId);
+        const isDelete = window.confirm("Are you sure the Delete this record");
+        if(isDelete){
+            const result = await axios.get(`${getUrl}DeleteSalaryById?salaryid=`+salaryId);
         if(result.data.data){
             alert("Salary Delete success...");
         }else{
             alert(result.data.message);
         }
+
+        }
+        
+    }
+    const resetData = () =>{
+        setAddSalaryList({
+        "salaryId": 0,
+        "employeeId": 0,
+        "salaryDate": " ",
+        "totalAdvance": 0,
+        "presentDays": 0,
+        "salaryAmount": 0
+        })
     }
 
     useEffect (()=>{
@@ -101,8 +116,11 @@ const EmpSalary = () => {
                                                         <td>{salary.salaryAmount}</td>
                                                         <td>{salary.totalAdvance}</td>
                                                         <td>
-                                                            <button type="button" className='btn btn-primary' onClick={() => { onEdit(salary) }}>Edit</button>
-                                                            <button type="button" className='btn btn-danger' onClick={()=>{onDelete(salary.salaryId)}}>Del</button>
+                                                            <div className='m-1'>
+                                                            <button type="button" className='btn btn-sm btn-primary m-1' onClick={() => { onEdit(salary) }}>Edit</button>
+                                                            <button type="button" className='btn  btn-sm btn-danger' onClick={()=>{onDelete(salary.salaryId)}}>Del</button>
+                                                      
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 )
@@ -123,13 +141,13 @@ const EmpSalary = () => {
                                 <div className="row">
 
                                     <div className="col-6">
-                                        <label htmlFor="">Employee Id</label>
+                                        <label htmlFor="">Employee </label>
                                         <select name="" id="" className='form-select'value={addSalaryList.employeeId} onChange={(event)=>{EmpSalaryInfo(event,'employeeId')}} >
-
+                                        <option >Select employee</option>
                                             {
                                                 empId.map((empid) => {
                                                     return (
-                                                        <option>{empid.empId}</option>
+                                                        <option value={empid.empId}>{empid.empName}</option>
                                                     )
                                                 })
                                             }
@@ -152,17 +170,24 @@ const EmpSalary = () => {
                                         <label htmlFor="">Salary Date</label>
                                         <input type="datetime-local" className='form-control' value={addSalaryList.salaryDate} onChange={(event)=>{EmpSalaryInfo(event,'salaryDate')}} />
                                     </div>
-                                    <div className="row">
+                                    <div className="row text-center">
+                                        <div className="col-6">
+                                        <button type="button" className='btn btn-secondary mt-2' onClick={resetData}>Reset</button>
+
+                                        </div>
+                                        <div className="col-6">
                                         {
-                                            addSalaryList.salaryId == '' && <div className="col-12 text-center mt-2">
-                                            <button type="button" className='btn btn-secondary' onClick={addSalary}>Save Salary</button>
+                                            addSalaryList.salaryId == '' && <div className="col-12  mt-2">
+                                            <button type="button" className='btn btn-success' onClick={addSalary}>Save Salary</button>
                                         </div>
                                         }
                                         {
-                                            addSalaryList.salaryId != '' && <div className="col-12 text-center mt-2">
+                                            addSalaryList.salaryId != '' && <div className="col-12  mt-2">
                                             <button type="button" className='btn btn-warning' onClick={updateSalary}>Update Salary</button>
                                         </div>
                                         }
+                                        </div>
+                                       
                                         
                                     </div>
                                 </div>
